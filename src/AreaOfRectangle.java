@@ -35,27 +35,32 @@ public class AreaOfRectangle extends PrintWriter {
         eventCollector = new int[bufferIndex * 2];
         int y = -1;
         long ans = 0;
+
+        // Sweeping through the Y-axis.
         for (int h = 0; h < eventCounter; h++) {
             Event event = events[h];
             if (y != -1)
                 ans += (long) (event.deltaY - y) * segmentPointsInXAxis[0];
             y = event.deltaY;
+
+            //Calculating the X-segment for y interval.
             update(0, 0, bufferIndex, event.leftX, event.rightX, event.addToEvent ? 1 : -1);
         }
         println(ans);
     }
 
-    void update(int segmentIndex, int leftX, int rightX, int eventleft, int eventRight, int adOrRemove) {
-        if (eventRight <= leftX || rightX <= eventleft) // Scenario 1: No Intersection
+    void update(int segmentIndex, int leftX, int rightX, int eventLeft, int eventRight, int adOrRemove) {
+        if (eventRight <= leftX || rightX <= eventLeft) // Scenario 1: No Intersection. Recursive ending condition.
             return;
         int segmentLeftIndex = segmentIndex * 2 + 1, segmentRightIndex = segmentIndex * 2 + 2;
-        if (eventleft <= leftX && rightX <= eventRight) // Scenario 2: Examinig points are between event Points in X-Axis (leftX, rightX within eventleft, eventRight)
+        if (eventLeft <= leftX && rightX <= eventRight) // Scenario 2: Examinig points are between event Points in X-Axis (leftX, rightX within eventLeft, eventRight)
             eventCollector[segmentIndex] += adOrRemove;
         else {
-            // Scenario 3: event points are between Examinig  Points in X-Axis (eventleft, eventRight within leftX, rightX)
+            // Scenario 3: event points are between Examinig  Points in X-Axis (eventLeft, eventRight within leftX, rightX)
+            // Sweeping towards the lines from both ends
             int m = (leftX + rightX) / 2;
-            update(segmentLeftIndex, leftX, m, eventleft, eventRight, adOrRemove);
-            update(segmentRightIndex, m, rightX, eventleft, eventRight, adOrRemove);
+            update(segmentLeftIndex, leftX, m, eventLeft, eventRight, adOrRemove);
+            update(segmentRightIndex, m, rightX, eventLeft, eventRight, adOrRemove);
         }
         /* if zz[k] < 0:
                 0. Time to conclude the task, because the event is ended ad need to remove.
