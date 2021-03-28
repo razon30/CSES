@@ -132,7 +132,3 @@ public class AreaOfRectangle extends PrintWriter {
 
 }
 
-//Problem
-//Challenge: Large Data Input
-//Efficiency: Complexity
-
