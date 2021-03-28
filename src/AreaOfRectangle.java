@@ -50,18 +50,21 @@ public class AreaOfRectangle extends PrintWriter {
             return;
         int segmentLeftIndex = segmentIndex * 2 + 1, segmentRightIndex = segmentIndex * 2 + 2;
         if (eventleft <= leftX && rightX <= eventRight) // Scenario 2: Examinig points are between event Points in X-Axis (leftX, rightX within eventleft, eventRight)
+            //Add the event, either to add (+1) or remove (-1)
             eventCollector[segmentIndex] += adOrRemove;
         else {
             // Scenario 3: event points are between Examinig  Points in X-Axis (eventleft, eventRight within leftX, rightX)
             int m = (leftX + rightX) / 2;
+
+            // Approaches to the event points in X-Axis form both ends.
             update(segmentLeftIndex, leftX, m, eventleft, eventRight, adOrRemove);
             update(segmentRightIndex, m, rightX, eventleft, eventRight, adOrRemove);
         }
-        /* if zz[k] < 0:
-                0. Time to conclude the task, because the event is ended ad need to remove.
-                1. if right and left is adjacent: Nothing to add because no intersecting event X
-                2. Else if, the gap is more than 1, there is possibility that X intersection is between leftX and rightX
-            else f zz[k] > 0:
+        /* if eventCollector[segmentIndex] < 0:
+                0. Time to conclude the task, because the event is ended and need to remove.
+                1. if right and left is adjacent: Nothing to add because intersection between X points are 0
+                2. Else if, the gap is more than 1, set the current segment value to the current node in segment tree by adding left and right node values.
+            else if eventCollector[segmentIndex] > 0:
                 1. The event is started.
                 2. Approach to right by substituting the leftX
 
