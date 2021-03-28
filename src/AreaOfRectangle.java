@@ -35,25 +35,30 @@ public class AreaOfRectangle extends PrintWriter {
         eventCollector = new int[bufferIndex * 2];
         int y = -1;
         long ans = 0;
+
+        // Sweeping through the Y-axis.
         for (int h = 0; h < eventCounter; h++) {
             Event event = events[h];
             if (y != -1)
                 ans += (long) (event.deltaY - y) * segmentPointsInXAxis[0];
             y = event.deltaY;
+
+            //Calculating the X-segment for y interval.
             update(0, 0, bufferIndex, event.leftX, event.rightX, event.addToEvent ? 1 : -1);
         }
         println(ans);
     }
 
-    void update(int segmentIndex, int leftX, int rightX, int eventleft, int eventRight, int adOrRemove) {
-        if (eventRight <= leftX || rightX <= eventleft) // Scenario 1: No Intersection
+    void update(int segmentIndex, int leftX, int rightX, int eventLeft, int eventRight, int adOrRemove) {
+        if (eventRight <= leftX || rightX <= eventLeft) // Scenario 1: No Intersection. Recursive ending condition.
             return;
         int segmentLeftIndex = segmentIndex * 2 + 1, segmentRightIndex = segmentIndex * 2 + 2;
         if (eventleft <= leftX && rightX <= eventRight) // Scenario 2: Examinig points are between event Points in X-Axis (leftX, rightX within eventleft, eventRight)
             //Add the event, either to add (+1) or remove (-1)
             eventCollector[segmentIndex] += adOrRemove;
         else {
-            // Scenario 3: event points are between Examinig  Points in X-Axis (eventleft, eventRight within leftX, rightX)
+            // Scenario 3: event points are between Examinig  Points in X-Axis (eventLeft, eventRight within leftX, rightX)
+            // Sweeping towards the lines from both ends
             int m = (leftX + rightX) / 2;
 
             // Approaches to the event points in X-Axis form both ends.
