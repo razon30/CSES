@@ -53,7 +53,7 @@ public class AreaOfRectangle extends PrintWriter {
         if (eventRight <= leftX || rightX <= eventLeft) // Scenario 1: No Intersection. Recursive ending condition.
             return;
         int segmentLeftIndex = segmentIndex * 2 + 1, segmentRightIndex = segmentIndex * 2 + 2;
-        if (eventleft <= leftX && rightX <= eventRight) // Scenario 2: Examinig points are between event Points in X-Axis (leftX, rightX within eventleft, eventRight)
+        if (eventLeft <= leftX && rightX <= eventRight) // Scenario 2: Examinig points are between event Points in X-Axis (leftX, rightX within eventleft, eventRight)
             //Add the event, either to add (+1) or remove (-1)
             eventCollector[segmentIndex] += adOrRemove;
         else {
@@ -62,8 +62,8 @@ public class AreaOfRectangle extends PrintWriter {
             int m = (leftX + rightX) / 2;
 
             // Approaches to the event points in X-Axis form both ends.
-            update(segmentLeftIndex, leftX, m, eventleft, eventRight, adOrRemove);
-            update(segmentRightIndex, m, rightX, eventleft, eventRight, adOrRemove);
+            update(segmentLeftIndex, leftX, m, eventLeft, eventRight, adOrRemove);
+            update(segmentRightIndex, m, rightX, eventLeft, eventRight, adOrRemove);
         }
         /* if eventCollector[segmentIndex] < 0:
                 0. Time to conclude the task, because the event is ended and need to remove.
